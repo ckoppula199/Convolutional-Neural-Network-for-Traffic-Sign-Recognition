@@ -26,7 +26,6 @@ classes = 43
 for label in range(classes):
     subdir = os.path.join('Data', 'Train', str(label))
     for filename in os.listdir(subdir):
-        print(filename)
         path = os.path.join(subdir, filename)
 
         image = Image.open(path)
@@ -36,8 +35,8 @@ for label in range(classes):
         labels.append(label)
 
 # Convert lists into numpy arrays
-np.array(features)
-np.array(labels)
+features = np.array(features)
+labels = np.array(labels)
 
 # See shape of data
 print("Shape of Data")
@@ -80,3 +79,28 @@ model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accur
 epochs = 15
 history = model.fit(X_train, y_train, batch_size=64, epochs=epochs, validation_data=(X_test, y_test))
 model.save("my_model.h5")
+
+
+"""
+---------------Visualising the Results---------------
+"""
+
+# Plotting graph for accuracy
+plt.figure(0)
+plt.plot(history.history['accuracy'], label='training accuracy')
+plt.plot(history.history['val_accuracy'], label='val accuracy')
+plt.title('Accuracy')
+plt.xlabel('epochs')
+plt.ylabel('accuracy')
+plt.legend()
+plt.show()
+
+# Plotting graph for loss
+plt.figure(1)
+plt.plot(history.history['loss'], label='training loss')
+plt.plot(history.history['val_loss'], label='val loss')
+plt.title('Loss')
+plt.xlabel('epochs')
+plt.ylabel('loss')
+plt.legend()
+plt.show()
