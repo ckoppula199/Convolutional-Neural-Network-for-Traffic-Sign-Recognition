@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 from PIL import Image
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
 from keras.utils import to_categorical
 from keras.layers import Conv2D, MaxPool2D, Dense, Dropout, Flatten
 from keras.models import Sequential, load_model
@@ -78,7 +79,6 @@ model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accur
 # batch_size is 64, 64 features analysed before weights updated
 epochs = 15
 history = model.fit(X_train, y_train, batch_size=64, epochs=epochs, validation_data=(X_test, y_test))
-model.save("my_model.h5")
 
 
 """
@@ -104,3 +104,31 @@ plt.xlabel('epochs')
 plt.ylabel('loss')
 plt.legend()
 plt.show()
+
+
+"""
+---------------Testing Accuracy on the Test Dataset---------------
+"""
+
+test_dataset = pd.read_csv('Test.csv')
+y_test = test_dataset["ClassId"].values
+imgs = test_dataset["Path"].values
+data=[]
+
+# Convert every image in test dataset into numpy array of correct size
+for img in imgs:
+    image = Image.open(img)
+    image = image.resize((IMG_WIDTH, IMG_HEIGHT))
+    image = np.array(image)
+    data.append(image)
+
+X_test=np.array(data)
+y_pred = model.predict_classes(X_test)
+#Accuracy with the test data
+print(accuracy_score(y_test, y_pred))
+
+
+"""
+---------------Save the Model---------------
+"""
+model.save("traffic_sign_classifier.h5")
