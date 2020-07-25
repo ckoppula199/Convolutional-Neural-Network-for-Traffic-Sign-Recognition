@@ -77,7 +77,7 @@ model.add(Dense(43, activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 # 15 passes through the training data
 # batch_size is 64, 64 features analysed before weights updated
-epochs = 1
+epochs = 15
 history = model.fit(X_train, y_train, batch_size=64, epochs=epochs, validation_data=(X_test, y_test))
 
 
