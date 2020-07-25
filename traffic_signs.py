@@ -53,5 +53,30 @@ y_test = to_categorical(y_test, classes)
 
 
 """
---------------Building the Model---------------
+--------------Building and Training the Model---------------
 """
+
+# Dropout used to prevent overfitting
+model = Sequential()
+# Input layer, need to state the shape of the input
+model.add(Conv2D(filters=32, kernel_size=(5,5), activation='relu', input_shape=(IMG_WIDTH, IMG_HEIGHT, 3)))
+model.add(Conv2D(filters=32, kernel_size=(5,5), activation='relu'))
+model.add(MaxPool2D(pool_size=(2, 2)))
+model.add(Dropout(rate=0.25))
+model.add(Conv2D(filters=64, kernel_size=(3, 3), activation='relu'))
+model.add(Conv2D(filters=64, kernel_size=(3, 3), activation='relu'))
+model.add(MaxPool2D(pool_size=(2, 2)))
+model.add(Dropout(rate=0.25))
+model.add(Flatten())
+model.add(Dense(256, activation='relu'))
+model.add(Dropout(rate=0.5))
+# Output layer with 43 nodes, one for each class
+model.add(Dense(43, activation='softmax'))
+# Compilation of the model
+# categorical_crossentropy used as we have categorical data
+model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+# 15 passes through the training data
+# batch_size is 64, 64 features analysed before weights updated
+epochs = 15
+history = model.fit(X_train, y_train, batch_size=64, epochs=epochs, validation_data=(X_test, y_test))
+model.save("my_model.h5")
