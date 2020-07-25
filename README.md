@@ -1,6 +1,6 @@
 # Convolutional-Neural-Network-for-Traffic-Sign-Recognition  
   
-Data for this project can be downloaded from the following link: https://www.kaggle.com/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign?  
+Data for this project can be downloaded from the following link: https://www.kaggle.com/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign  
   
 This project uses a Convolutional Neural Network to classify 43 different types of trafic signs. An application of this could be used in autonomous vehicles.  
   
