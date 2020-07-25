@@ -77,7 +77,7 @@ model.add(Dense(43, activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 # 15 passes through the training data
 # batch_size is 64, 64 features analysed before weights updated
-epochs = 15
+epochs = 1
 history = model.fit(X_train, y_train, batch_size=64, epochs=epochs, validation_data=(X_test, y_test))
 
 
@@ -110,13 +110,21 @@ plt.show()
 ---------------Testing Accuracy on the Test Dataset---------------
 """
 
-test_dataset = pd.read_csv('Test.csv')
+test_dataset = pd.read_csv('Data' + os.path.sep + 'Test.csv')
 y_test = test_dataset["ClassId"].values
-imgs = test_dataset["Path"].values
+paths = test_dataset["Path"].values
+
+# Path column of the form 'Test/0000.png'
+# Need to change to form 'Data/Test/0000.png'
+img_paths = []
+for path in paths:
+    img_path = os.path.join('Data', path)
+    img_paths.append(img_path)
+
 data=[]
 
 # Convert every image in test dataset into numpy array of correct size
-for img in imgs:
+for img in img_paths:
     image = Image.open(img)
     image = image.resize((IMG_WIDTH, IMG_HEIGHT))
     image = np.array(image)
@@ -125,7 +133,7 @@ for img in imgs:
 X_test=np.array(data)
 y_pred = model.predict_classes(X_test)
 #Accuracy with the test data
-print(accuracy_score(y_test, y_pred))
+print(f"\n\n\nThe accuracy of the model on the test dataset is {accuracy_score(y_test, y_pred)}")
 
 
 """
