@@ -9,7 +9,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from keras.utils import to_categorical
 from keras.layers import Conv2D, MaxPool2D, Dense, Dropout, Flatten
-from keras.models import Sequential, load_model
+from keras.models import Sequential
 
 IMG_WIDTH = 30
 IMG_HEIGHT = 30
@@ -131,7 +131,9 @@ for img in img_paths:
     data.append(image)
 
 X_test=np.array(data)
-y_pred = model.predict_classes(X_test)
+# predict_classes is deprecated, using predict and numpy to get similar results
+y_pred = model.predict(X_test)
+y_pred = np.argmax(y_pred, axis=-1)
 #Accuracy with the test data
 print(f"\n\n\nThe accuracy of the model on the test dataset is {accuracy_score(y_test, y_pred)}")
 
